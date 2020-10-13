@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LogAnalyzer": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\umanivannan\\Desktop\\perf\\runs\\Scenario9Run1PerfLogs"
+    }
+  }
+}
