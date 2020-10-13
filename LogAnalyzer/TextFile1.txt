@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace LogAnalyzer
+{
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			var d = new DirectoryInfo(args[0]);
+			var files = d.GetFiles("*.log");
+			var csvLines = new List<string>();
+			foreach (var fileInfo in files)
+			{
+				csvLines.Add(fileInfo.FullName);
+				csvLines.Add("");
+
+				var lines = File.ReadAllLines(fileInfo.FullName);
+
+				var useDebugLines = new String[] { };
+				
+
+				foreach (var line in lines)
+				{
+					var csvLine = "";
+					if (!line.Contains("|USER_DEBUG|")) continue;
+
+					var logParts = line.Split("|");
+
+					var message = logParts.LastOrDefault();
+
+					if (message != null && message.StartsWith("Total", StringComparison.InvariantCulture))
+					{
+						var messageParts = message.Split("-");
+						csvLine += messageParts[0];
+						csvLine += ",";
+						csvLine += messageParts[1].Split("out of")[0].Trim();
+
+
+					}
+
+					csvLines.Add(csvLine);
+				}
+
+				
+			}
+
+			File.WriteAllLines(d.FullName + "/" + Path.GetFileNameWithoutExtension(d.Name) + ".csv", csvLines);
+
+		}
+	}
+
+
+}
