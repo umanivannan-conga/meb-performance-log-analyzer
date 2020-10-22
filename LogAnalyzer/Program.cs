@@ -113,7 +113,7 @@ namespace LogAnalyzer
               if (message.Split("-").Length > 0)
                 stat.ProcessQualificationAndBenefitLines = message.Split("-")[1].Trim();
             }
-            if (message != null && message.StartsWith("IncenttiveName - ", StringComparison.InvariantCulture))
+            if (message != null && message.StartsWith("IncentiveName - ", StringComparison.InvariantCulture))
             {
               if (message.Split("-").Length > 0)
                 stat.IncentiveName = message.Split("-")[1].Trim();
