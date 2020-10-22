@@ -113,6 +113,11 @@ namespace LogAnalyzer
               if (message.Split("-").Length > 0)
                 stat.ProcessQualificationAndBenefitLines = message.Split("-")[1].Trim();
             }
+            if (message != null && message.StartsWith("IncentiveName - ", StringComparison.InvariantCulture))
+            {
+              if (message.Split("-").Length > 0)
+                stat.IncentiveName = message.Split("-")[1].Trim();
+            }
           }
           stats.Add(stat);
         }
@@ -145,6 +150,7 @@ namespace LogAnalyzer
           ? stat.Summary.Replace(",", "|")
           : "No Summary found in file";
         csvLines.Add("Summary," + summary);
+        csvLines.Add("IncentiveName," + stat.IncentiveName);
         csvLines.Add("ScheduleId," + stat.ScheduleId);
         csvLines.Add("Total SOQL queries," + stat.TotalSoqlQueries);
         csvLines.Add("Total records retrieved by SOQL queries," + stat.TotalRecordsRetreivedBySoqlQueries);
@@ -193,6 +199,7 @@ namespace LogAnalyzer
   {
 
     public string ScheduleId { get; set; }
+    public string IncentiveName { get; set; }
 
     public long TotalSoqlQueries { get; set; }
     public long TotalRecordsRetreivedBySoqlQueries { get; set; }
