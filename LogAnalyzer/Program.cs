@@ -24,12 +24,15 @@ namespace LogAnalyzer
 
           foreach (var line in lines)
           {
-            if (!line.Contains("|USER_DEBUG|")) continue;
+            if (!(line.Contains("|USER_DEBUG|") || line.Contains("|FATAL_ERROR|"))) continue;
 
             var logParts = line.Split("|");
 
             var message = logParts.LastOrDefault();
-
+            if (message != null && message.StartsWith("System.", StringComparison.InvariantCulture))
+            {
+              stat.Summary = message;
+            }
             if (message != null && message.StartsWith("Total", StringComparison.InvariantCulture))
             {
               var messageParts = message.Split("-");
@@ -56,7 +59,6 @@ namespace LogAnalyzer
                   break;
               }
             }
-
             if (message != null && message.StartsWith("Finished processing", StringComparison.InvariantCulture))
             {
               stat.Summary = message;
@@ -86,7 +88,6 @@ namespace LogAnalyzer
               if (message.Split("-").Length > 0)
                 stat.GetAccountParticipantMap = message.Split("-")[1].Trim();
             }
-
             if (message != null && message.StartsWith("getPriceRuleSets - ", StringComparison.InvariantCulture))
             {
               if (message.Split("-").Length > 0)
@@ -107,7 +108,6 @@ namespace LogAnalyzer
               if (message.Split("-").Length > 0)
                 stat.BucketTransactionsByPriceRules = message.Split("-")[1].Trim();
             }
-
             if (message != null && message.StartsWith("processQualificationAndBenefitLines - ", StringComparison.InvariantCulture))
             {
               if (message.Split("-").Length > 0)
